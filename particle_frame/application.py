@@ -4,7 +4,6 @@ from datetime import datetime
 from . import views as v
 from . import models as m
 
-
 class Application(tk.Tk):
     """Application root window"""
 
@@ -12,7 +11,7 @@ class Application(tk.Tk):
         super().__init__(*args, **kwargs)
 
         self.title("Particle Viz Framework")
-        self.resizable(width=False, height=False)
+        self.resizable() #width=False, height=False)
 
         ttk.Label(
             self,
@@ -22,19 +21,25 @@ class Application(tk.Tk):
 
 
         self.recordform = v.DataRecordForm(self, m.CSVModel.fields)
-        self.recordform.grid(row=1, padx=10)
+        self.recordform.grid(row=1, padx=10, sticky="W")
 
         self.plotform=v.PlotForm(self)
         self.plotform.grid(row=2, padx=10)
+        self.plotform.plotIt()
 
 
+
+        # guess i could put all of these into another frame...
         self.savebutton = ttk.Button(self, text="Save", command=self.on_save)
-        self.savebutton.grid(sticky="e", row=3, padx=10)
+        self.savebutton.grid(sticky="w", row=3, padx=10)
+
+        self.exitbutton = ttk.Button(self, text="Exit", command=self.on_exit)
+        self.exitbutton.grid(sticky="e", row=3, padx=10)
 
         # status bar
         self.status = tk.StringVar()
         self.statusbar = ttk.Label(self, textvariable=self.status)
-        self.statusbar.grid(sticky="we", row=3, padx=10)
+        self.statusbar.grid(sticky="we", row=4, padx=10)
 
         self.records_saved = 0
 
@@ -62,3 +67,9 @@ class Application(tk.Tk):
             "{} records saved this session".format(self.records_saved)
         )
         self.recordform.reset()
+
+    def on_exit(self):
+        datestring = datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
+        self.status.set("Exit button called at {}".format(datestring))
+
+

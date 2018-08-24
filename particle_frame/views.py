@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
 from . import widgets as w
+import random
 
 
 class DataRecordForm(tk.Frame):
@@ -49,90 +50,91 @@ class DataRecordForm(tk.Frame):
             recordinfo, "Radius",
             field_spec=fields['Position']
         )
-        self.inputs['Radius'].grid(row=2, column=0)
+        self.inputs['Radius'].grid(row=1, column=2)
 
         recordinfo.grid(row=0, column=0, sticky="we")
 
 
         # Environment Data
-        environmentinfo = tk.LabelFrame(self, text="Environment Data")
-        self.inputs['Humidity'] = w.LabelInput(
-            environmentinfo, "Humidity (g/m³)",
-            field_spec=fields['Humidity']
-        )
-        self.inputs['Humidity'].grid(row=0, column=0)
-        self.inputs['Light'] = w.LabelInput(
-            environmentinfo, "Light (klx)",
-            field_spec=fields['Light']
-        )
-        self.inputs['Light'].grid(row=0, column=1)
-        self.inputs['Temperature'] = w.LabelInput(
-            environmentinfo, "Temperature (°C)",
-            field_spec=fields['Temperature']
-        )
-        self.inputs['Temperature'].grid(row=0, column=2)
-        self.inputs['Equipment Fault'] = w.LabelInput(
-            environmentinfo, "Equipment Fault",
-            field_spec=fields['Equipment Fault']
-        )
-        self.inputs['Equipment Fault'].grid(row=1, column=0, columnspan=3)
-        environmentinfo.grid(row=1, column=0, sticky="we")
+        # environmentinfo = tk.LabelFrame(self, text="Environment Data")
+        # self.inputs['Humidity'] = w.LabelInput(
+        #     environmentinfo, "Humidity (g/m³)",
+        #     field_spec=fields['Humidity']
+        # )
+        # self.inputs['Humidity'].grid(row=0, column=0)
+        # self.inputs['Light'] = w.LabelInput(
+        #     environmentinfo, "Light (klx)",
+        #     field_spec=fields['Light']
+        # )
+        # self.inputs['Light'].grid(row=0, column=1)
+        # self.inputs['Temperature'] = w.LabelInput(
+        #     environmentinfo, "Temperature (°C)",
+        #     field_spec=fields['Temperature']
+        # )
+        # self.inputs['Temperature'].grid(row=0, column=2)
+        # self.inputs['Equipment Fault'] = w.LabelInput(
+        #     environmentinfo, "Equipment Fault",
+        #     field_spec=fields['Equipment Fault']
+        # )
+        # self.inputs['Equipment Fault'].grid(row=1, column=0, columnspan=3)
+        # environmentinfo.grid(row=1, column=0, sticky="we")
 
-        # Plant Data section
-        plantinfo = tk.LabelFrame(self, text="Plant Data")
+        # # Plant Data section
+        # plantinfo = tk.LabelFrame(self, text="Plant Data")
+        #
+        # self.inputs['Plants'] = w.LabelInput(
+        #     plantinfo, "Plants",
+        #     field_spec=fields['Plants']
+        # )
+        # self.inputs['Plants'].grid(row=0, column=0)
+        # self.inputs['Blossoms'] = w.LabelInput(
+        #     plantinfo, "Blossoms",
+        #     field_spec=fields['Blossoms']
+        # )
+        # self.inputs['Blossoms'].grid(row=0, column=1)
+        # self.inputs['Fruit'] = w.LabelInput(
+        #     plantinfo, "Fruit",
+        #     field_spec=fields['Fruit']
+        # )
+        # self.inputs['Fruit'].grid(row=0, column=2)
 
-        self.inputs['Plants'] = w.LabelInput(
-            plantinfo, "Plants",
-            field_spec=fields['Plants']
-        )
-        self.inputs['Plants'].grid(row=0, column=0)
-        self.inputs['Blossoms'] = w.LabelInput(
-            plantinfo, "Blossoms",
-            field_spec=fields['Blossoms']
-        )
-        self.inputs['Blossoms'].grid(row=0, column=1)
-        self.inputs['Fruit'] = w.LabelInput(
-            plantinfo, "Fruit",
-            field_spec=fields['Fruit']
-        )
-        self.inputs['Fruit'].grid(row=0, column=2)
-        # Height data
-        # create variables to be updated for min/max height
-        # they can be referenced for min/max variables
-        min_height_var = tk.DoubleVar(value='-infinity')
-        max_height_var = tk.DoubleVar(value='infinity')
+        # # Height data
+        # # create variables to be updated for min/max height
+        # # they can be referenced for min/max variables
+        # min_height_var = tk.DoubleVar(value='-infinity')
+        # max_height_var = tk.DoubleVar(value='infinity')
+        #
+        # self.inputs['Min Height'] = w.LabelInput(
+        #     plantinfo, "Min Height (cm)",
+        #     field_spec=fields['Min Height'],
+        #     input_args={"max_var": max_height_var,
+        #                 "focus_update_var": min_height_var}
+        # )
+        # self.inputs['Min Height'].grid(row=1, column=0)
+        # self.inputs['Max Height'] = w.LabelInput(
+        #     plantinfo, "Max Height (cm)",
+        #     field_spec=fields['Max Height'],
+        #     input_args={"min_var": min_height_var,
+        #                 "focus_update_var": max_height_var}
+        # )
+        # self.inputs['Max Height'].grid(row=1, column=1)
+        # self.inputs['Median Height'] = w.LabelInput(
+        #     plantinfo, "Median Height (cm)",
+        #     field_spec=fields['Median Height'],
+        #     input_args={"min_var": min_height_var,
+        #                 "max_var": max_height_var}
+        # )
+        # self.inputs['Median Height'].grid(row=1, column=2)
+        #
+        # plantinfo.grid(row=2, column=0, sticky="we")
 
-        self.inputs['Min Height'] = w.LabelInput(
-            plantinfo, "Min Height (cm)",
-            field_spec=fields['Min Height'],
-            input_args={"max_var": max_height_var,
-                        "focus_update_var": min_height_var}
-        )
-        self.inputs['Min Height'].grid(row=1, column=0)
-        self.inputs['Max Height'] = w.LabelInput(
-            plantinfo, "Max Height (cm)",
-            field_spec=fields['Max Height'],
-            input_args={"min_var": min_height_var,
-                        "focus_update_var": max_height_var}
-        )
-        self.inputs['Max Height'].grid(row=1, column=1)
-        self.inputs['Median Height'] = w.LabelInput(
-            plantinfo, "Median Height (cm)",
-            field_spec=fields['Median Height'],
-            input_args={"min_var": min_height_var,
-                        "max_var": max_height_var}
-        )
-        self.inputs['Median Height'].grid(row=1, column=2)
-
-        plantinfo.grid(row=2, column=0, sticky="we")
-
-        # Notes section
-        self.inputs['Notes'] = w.LabelInput(
-            self, "Notes",
-            field_spec=fields['Notes'],
-            input_args={"width": 75, "height": 10}
-        )
-        self.inputs['Notes'].grid(sticky="w", row=3, column=0)
+        # # Notes section
+        # self.inputs['Notes'] = w.LabelInput(
+        #     self, "Notes",
+        #     field_spec=fields['Notes'],
+        #     input_args={"width": 75, "height": 10}
+        # )
+        # self.inputs['Notes'].grid(sticky="w", row=3, column=0)
 
         # default the form
         self.reset()
@@ -192,11 +194,36 @@ class DataRecordForm(tk.Frame):
 class PlotForm(tk.Frame):
     """The input form for our widgets"""
 
-    def __init__(self, parent, fields, *args, **kwargs):
+    def __init__(self, parent,  *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         # A dict to keep track of input widgets
-        self.inputs = {}
+        #self.inputs = {}
 
         # Build the form
         # recordinfo section
-        recordinfo = tk.LabelFrame(self, text="Record Information")
+        #plotform = tk.Frame(self)
+
+        self.canvas=tk.Canvas(self, width=800, height=400)
+        self.canvas.grid(row=0, column=0)
+
+    def reset(self):
+        pass
+
+    def plotIt(self):
+        #self.canvas.create_line(0,0,100,100)
+        self.plotPoint(10,10,5)
+        self.plotPoint(30,30,5)
+        self.plotPoint(50,100,7)
+
+
+    def plotPoint(self, xpos, ypos, radius):
+        x0=xpos-radius
+        y0=ypos-radius
+
+        x1=xpos + radius
+        y1=ypos + radius
+        self.canvas.create_oval(x0,y0,x1,y1)
+
+
+
+
