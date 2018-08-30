@@ -19,6 +19,15 @@ class Application(tk.Tk):
             font=("TkDefaultFont", 16)
         ).grid(row=0)
 
+        main_menu = tk.Menu(self)
+        self.config(menu=main_menu)
+        main_menu.add('command', label='Quit', command=self.quit)
+        text_menu = tk.Menu(main_menu, tearoff=False)
+        text_menu.add_command(label='Set to "Hi"',
+                              command=lambda: print('Hi'))
+        text_menu.add_command(label='Set to "There"',
+                              command=lambda: print('There'))
+
 
         self.recordform = v.DataRecordForm(self, m.CSVModel.fields)
         self.recordform.grid(row=1, padx=10, sticky="W")
@@ -30,11 +39,20 @@ class Application(tk.Tk):
 
 
         # guess i could put all of these into another frame...
-        self.savebutton = ttk.Button(self, text="Save", command=self.on_save)
-        self.savebutton.grid(sticky="w", row=3, padx=10)
+        #self.savebutton = ttk.Button(self, text="Save", command=self.on_save)
+        #self.savebutton.grid(sticky="w", row=3, padx=10)
 
-        self.exitbutton = ttk.Button(self, text="Exit", command=self.on_exit)
-        self.exitbutton.grid(sticky="e", row=3, padx=10)
+        #self.exitbutton = ttk.Button(self, text="Exit", command=self.on_exit)
+        #self.exitbutton.grid(sticky="e", row=3, padx=10)
+        myButtonDict = {
+            'Save': self.on_save,
+            'Exit': self.on_exit,
+            'Test': self.on_test,
+        }
+
+        self.buttonform=v.ButtonForm(self, myButtonDict)
+        self.buttonform.grid(row=3,column=0, sticky='w')
+ #       self.buttonform.set_save(self.on_exit)
 
         # status bar
         self.status = tk.StringVar()
@@ -69,7 +87,9 @@ class Application(tk.Tk):
         self.recordform.reset()
 
     def on_exit(self):
-        datestring = datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
-        self.status.set("Exit button called at {}".format(datestring))
+        self.destroy()
+        #datestring = datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
+        #self.status.set("Exit button called at {}".format(datestring))
 
-
+    def on_test(self):
+        self.plotform.plotIt()
