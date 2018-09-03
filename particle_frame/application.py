@@ -3,7 +3,7 @@ from tkinter import ttk
 from datetime import datetime
 from . import views as v
 from . import models as m
-#from . import menu as mm
+from . import menu as mm
 
 
 class Application(tk.Tk):
@@ -23,31 +23,22 @@ class Application(tk.Tk):
 
 
 
-        self.menubar = tk.Menu(self)
-        #main_menu=tk.Menu(self.menubar, tearoff=False)
-
-        text_menu = tk.Menu(self.menubar, tearoff=False)
-        self.menubar.add_cascade(label='TTT', menu=text_menu)
-
-        text_menu.add_command(label='Set to "Hi"',
-                              command=lambda: print('Hi'))
-        text_menu.add_command(label='Set to "There"',
-                              command=lambda: print('There'))
-
+        self.menubar=mm.MenuView(self)
         self.config(menu=self.menubar)
 
-        #text_menu2 = tk.Menu(main_menu, tearoff=False)
-        #text_menu2.add_command(label='Set to "Hi"',
-        #                      command=lambda: print('Hi'))
-        #text_menu2.add_command(label='Set to "There"',
-        #                      command=lambda: print('There'))
+        # self.menubar = tk.Menu(self)
+        #
+        # text_menu = tk.Menu(self.menubar, tearoff=False)
+        # self.menubar.add_cascade(label='TTT', menu=text_menu)
+        #
+        # text_menu.add_command(label='Set to "Hi"',
+        #                       command=lambda: print('Hi'))
+        # text_menu.add_command(label='Set to "There"',
+        #                       command=lambda: print('There'))
+        #
+        #self.config(menu=self.menubar)
 
-        #main_menu.add_cascade(label="Text", menu=text_menu)
-        #main_menu.add_cascade(label="Text3", menu=text_menu2)
 
-        #self.config(menu=self.main_menu)
-
-        #self.main_menu = mm.MenuClass(self)
 
         self.recordform = v.DataRecordForm(self, m.CSVModel.fields)
         self.recordform.grid(row=1, padx=10, sticky="W")

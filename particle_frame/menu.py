@@ -1,16 +1,28 @@
 import tkinter as tk
-from tkinter import ttk
-from datetime import datetime
-from . import widgets as w
-import random
 
-class MenuClass(tk.Menu):
+
+class MenuView(tk.Menu):
 
     def __init__(self, master=None):
-        super().init(master)
-        self.master = master
-        self.file = tk.Menu(self)
-        self.add_cascade(label="File", menu=self.file)
-        self.file.add_command(label="Open", command=master.open)
+        super().__init__(master)
 
+        #self.menubar = tk.Menu(self)
+        #main_menu=tk.Menu(self.menubar, tearoff=False)
+
+        text_menu = tk.Menu(self, tearoff=False)
+        self.add_cascade(label='TTTMenuView', menu=text_menu)
+
+        text_menu.add_command(label='Set to "Hi"',
+                              command=lambda: print('Hi'))
+        text_menu.add_command(label='Set to "There"',
+                              command=lambda: print('There'))
+
+        #self.config(menu=self)
+
+        text_menu2 = tk.Menu(self, tearoff=False)
+        self.add_cascade(label='TTTMenuView2', menu=text_menu2)
+        text_menu2.add_command(label='Set to "Hi"',
+                              command=lambda: print('Hi'))
+        text_menu2.add_command(label='Set to "There"',
+                              command=lambda: print('There'))
 
