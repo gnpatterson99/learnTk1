@@ -3,12 +3,12 @@ import tkinter as tk
 
 class MenuView(tk.Menu):
 
-    def __init__(self, master=None):
-        super().__init__(master)
+    def __init__(self, parent, settings=None, callbacks=None, **kwargs):
 
-        #self.menubar = tk.Menu(self)
-        #main_menu=tk.Menu(self.menubar, tearoff=False)
+    #def __init__(self, master=None):
+        #super().__init__(master)
 
+        super().__init__(parent, **kwargs)
         text_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label='TTTMenuView', menu=text_menu)
 
@@ -26,3 +26,21 @@ class MenuView(tk.Menu):
         text_menu2.add_command(label='Set to "There"',
                               command=lambda: print('There'))
 
+        file_menu = tk.Menu(self, tearoff=False)
+        self.add_cascade(label='File...', menu=file_menu)
+        #file_menu.add_command(
+        #    label="Select file…",
+        #    command=callbacks['file->open'])
+
+        for (k,v) in callbacks.items():
+            file_menu.add_command(
+                label=k,
+                command=v)
+        if settings != None:
+            settings_menu = tk.Menu(self, tearoff=False)
+            self.add_cascade(label='Settings...', menu=settings_menu)
+
+            for (k,v) in settings.items():
+                file_menu.add_command(
+                    label=k,
+                    command=v)

@@ -22,23 +22,16 @@ class Application(tk.Tk):
         ).grid(row=0)
 
 
+        my_callbacks= { 'file->open': lambda: print('file->open'),
+                        'Save...': lambda: print("save file!!!")
+                        }
 
-        self.menubar=mm.MenuView(self)
+        my_settings = {
+
+        }
+
+        self.menubar=mm.MenuView(self,callbacks=my_callbacks)
         self.config(menu=self.menubar)
-
-        # self.menubar = tk.Menu(self)
-        #
-        # text_menu = tk.Menu(self.menubar, tearoff=False)
-        # self.menubar.add_cascade(label='TTT', menu=text_menu)
-        #
-        # text_menu.add_command(label='Set to "Hi"',
-        #                       command=lambda: print('Hi'))
-        # text_menu.add_command(label='Set to "There"',
-        #                       command=lambda: print('There'))
-        #
-        #self.config(menu=self.menubar)
-
-
 
         self.recordform = v.DataRecordForm(self, m.CSVModel.fields)
         self.recordform.grid(row=1, padx=10, sticky="W")
