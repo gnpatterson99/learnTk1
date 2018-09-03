@@ -3,6 +3,8 @@ from tkinter import ttk
 from datetime import datetime
 from . import views as v
 from . import models as m
+#from . import menu as mm
+
 
 class Application(tk.Tk):
     """Application root window"""
@@ -19,15 +21,33 @@ class Application(tk.Tk):
             font=("TkDefaultFont", 16)
         ).grid(row=0)
 
-        main_menu = tk.Menu(self)
-        self.config(menu=main_menu)
-        main_menu.add('command', label='Quit', command=self.quit)
-        text_menu = tk.Menu(main_menu, tearoff=False)
+
+
+        self.menubar = tk.Menu(self)
+        #main_menu=tk.Menu(self.menubar, tearoff=False)
+
+        text_menu = tk.Menu(self.menubar, tearoff=False)
+        self.menubar.add_cascade(label='TTT', menu=text_menu)
+
         text_menu.add_command(label='Set to "Hi"',
                               command=lambda: print('Hi'))
         text_menu.add_command(label='Set to "There"',
                               command=lambda: print('There'))
 
+        self.config(menu=self.menubar)
+
+        #text_menu2 = tk.Menu(main_menu, tearoff=False)
+        #text_menu2.add_command(label='Set to "Hi"',
+        #                      command=lambda: print('Hi'))
+        #text_menu2.add_command(label='Set to "There"',
+        #                      command=lambda: print('There'))
+
+        #main_menu.add_cascade(label="Text", menu=text_menu)
+        #main_menu.add_cascade(label="Text3", menu=text_menu2)
+
+        #self.config(menu=self.main_menu)
+
+        #self.main_menu = mm.MenuClass(self)
 
         self.recordform = v.DataRecordForm(self, m.CSVModel.fields)
         self.recordform.grid(row=1, padx=10, sticky="W")
