@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
+from tkinter.filedialog import askdirectory
+
 from . import views as v
 from . import models as m
 from . import menu as mm
@@ -21,10 +23,15 @@ class Application(tk.Tk):
             font=("TkDefaultFont", 16)
         ).grid(row=0)
 
+        self.filename=tk.StringVar()
+        self.path = tk.StringVar()
 
-        my_callbacks= { 'file->open': lambda: print('file->open'),
-                        'Save...': lambda: print("save file!!!")
+        my_callbacks= { 'Open...': self.on_file_open,
+                        'Default Path...': self.on_specify_path,
+                        'Save': lambda: print("save file!!!"),
+                        'Save As...': lambda: print("save file!!!")
                         }
+
 
         my_settings = {
 
@@ -65,6 +72,12 @@ class Application(tk.Tk):
 
         self.records_saved = 0
 
+    def on_save_as(self):
+        # first we need to ask which file to use...
+        pass
+
+
+
     def on_save(self):
         """Handles save button clicks"""
 
@@ -97,3 +110,18 @@ class Application(tk.Tk):
 
     def on_test(self):
         self.plotform.plotIt()
+
+    def on_specify_path(self):
+        tmpdirname = askdirectory(
+            title='Select the target file for saving records',
+            initialdir="/Users/george",
+            parent=self
+        )
+        print("Chose tmpdirname of",tmpdirname)
+        self.path.set(tmpdirname)
+
+    def on_file_open(self):
+        pass
+
+
+

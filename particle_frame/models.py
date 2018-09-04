@@ -62,3 +62,31 @@ class CSVModel:
             if newfile:
                 csvwriter.writeheader()
             csvwriter.writerow(data)
+
+
+class Particle(object):
+
+    def __init__(self, position_x, position_y, velocity_x, velocity_y, size, color):
+        self.position_x
+        self.position_y
+        self.velocity_x
+        self.velocity_y
+        self.size=size
+        self.color=color
+
+
+    def __init__(self,position_x, position_y):
+        self.__init__(position_x, position_y, 0.0, 0.0, 1, 'default')
+
+
+    def update_physics(self):
+        pass
+
+
+
+
+class ParticleBag(object):
+    """ use this to store a collections of particles.
+    over time this will be enhanced to keep an ordered list of the
+    particles that are closest to collosion so that we can deal with them
+    """
