@@ -1,6 +1,9 @@
+import math
 import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
+
+from try1.particle_frame.constants import Dimensions
 from . import widgets as w
 import random
 
@@ -20,35 +23,42 @@ class DataRecordForm(tk.Frame):
         # line 1
         self.inputs['X position'] = w.LabelInput(
             recordinfo, "Xposition",
-            field_spec=fields['Position']
+            field_spec=fields['xPosition']
         )
         self.inputs['X position'].grid(row=0, column=0)
 
         self.inputs['Y position'] = w.LabelInput(
             recordinfo, "Yposition",
-            field_spec=fields['Position']
+            field_spec=fields['yPosition']
         )
         self.inputs['Y position'].grid(row=0, column=1)
+
+
+        self.inputs['Color'] = w.LabelInput(
+            recordinfo, "Color",
+            field_spec=fields['Color']
+        )
+        self.inputs['Color'].grid(row=0, column=2)
 
         # line 2
         self.inputs['X velocity'] = w.LabelInput(
             recordinfo, "Xvelocity",
-            field_spec=fields['Velocity']
+            field_spec=fields['xVelocity']
         )
         self.inputs['X velocity'].grid(row=1, column=0)
 
 
-        self.inputs['Y Velocity'] = w.LabelInput(
+        self.inputs['Y velocity'] = w.LabelInput(
             recordinfo, "Yvelocity",
-            field_spec=fields['Velocity']
+            field_spec=fields['yVelocity']
         )
-        self.inputs['Y Velocity'].grid(row=1, column=1)
+        self.inputs['Y velocity'].grid(row=1, column=1)
 
         # next row...
 
         self.inputs['Radius'] = w.LabelInput(
             recordinfo, "Radius",
-            field_spec=fields['Position']
+            field_spec=fields['Radius']
         )
         self.inputs['Radius'].grid(row=1, column=2)
 
@@ -120,7 +130,7 @@ class PlotForm(tk.Frame):
         # recordinfo section
         #plotform = tk.Frame(self)
 
-        self.canvas=tk.Canvas(self, width=800, height=400)
+        self.canvas=tk.Canvas(self, width=Dimensions.window_width, height=Dimensions.window_height)
         self.canvas.grid(row=0, column=0)
 
     def reset(self):
@@ -128,6 +138,8 @@ class PlotForm(tk.Frame):
 
     def plotIt(self):
         #self.canvas.create_line(0,0,100,100)
+
+
         for i in range(20):
             x = random.randint(10, 400)
             y = random.randint(10, 400)
@@ -135,12 +147,47 @@ class PlotForm(tk.Frame):
 
 
     def plotPoint(self, xpos, ypos, radius):
+        xpos = xpos * (Dimensions.window_width/Dimensions.wall_x)
+        ypos = Dimensions.window_height -  (ypos * (Dimensions.window_height / Dimensions.wall_y))
+        radius = radius * (Dimensions.window_height / Dimensions.wall_y)
+
         x0=xpos-radius
         y0=ypos-radius
 
         x1=xpos + radius
         y1=ypos + radius
         self.canvas.create_oval(x0,y0,x1,y1)
+
+
+    def plotParticle(self, particle):
+
+        sqrt2 = math.sqrt(2.0)
+        xpos = particle.position_x * (Dimensions.window_width / Dimensions.wall_x)
+        ypos = Dimensions.window_height - (particle.position_y * (Dimensions.window_height / Dimensions.wall_y))
+        radius = particle.size * (Dimensions.window_height / Dimensions.wall_y)
+
+
+        x0 = xpos - radius# * sqrt2
+        y0 = ypos - radius# * sqrt2
+
+        x1 = xpos + radius# * sqrt2
+        y1 = ypos + radius# * sqrt2
+
+        self.canvas.create_oval(x0, y0, x1, y1)
+
+
+    def plotAllParticles(self, particleBag):
+
+        self.canvas.delete("all")
+        self.canvas.create_line(0, 0, 0, Dimensions.window_height)
+        self.canvas.create_line(0, 0, Dimensions.window_width, 0)
+        self.canvas.create_line(0, Dimensions.window_height, Dimensions.window_width, Dimensions.window_height)
+        self.canvas.create_line(Dimensions.window_width, 0, Dimensions.window_width, Dimensions.window_height)
+
+        for p in particleBag.particle_array:
+            self.plotParticle(p)
+
+
 
 
 

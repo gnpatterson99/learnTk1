@@ -6,3 +6,14 @@ class FieldTypes:
     decimal = 5
     integer = 6
     boolean = 7
+
+
+
+class Dimensions:
+    window_width = 800
+    window_height = 400
+
+    wall_x=80
+    wall_y=40
+
+

@@ -1,11 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
-from tkinter.filedialog import askdirectory
+from tkinter.filedialog import askdirectory, asksaveasfilename
+from threading import Thread, Timer
 
 from . import views as v
 from . import models as m
 from . import menu as mm
+
 
 
 class Application(tk.Tk):
@@ -28,14 +30,11 @@ class Application(tk.Tk):
 
         my_callbacks= { 'Open...': self.on_file_open,
                         'Default Path...': self.on_specify_path,
-                        'Save': lambda: print("save file!!!"),
-                        'Save As...': lambda: print("save file!!!")
+                        'Save': self.on_save,
+                        'Save As...': self.on_save_as,
                         }
 
 
-        my_settings = {
-
-        }
 
         self.menubar=mm.MenuView(self,callbacks=my_callbacks)
         self.config(menu=self.menubar)
@@ -45,7 +44,7 @@ class Application(tk.Tk):
 
         self.plotform=v.PlotForm(self)
         self.plotform.grid(row=2, padx=10)
-        self.plotform.plotIt()
+        #self.plotform.plotIt()
 
 
 
@@ -56,6 +55,7 @@ class Application(tk.Tk):
         #self.exitbutton = ttk.Button(self, text="Exit", command=self.on_exit)
         #self.exitbutton.grid(sticky="e", row=3, padx=10)
         myButtonDict = {
+            'Create': self.on_create_particle,
             'Save': self.on_save,
             'Exit': self.on_exit,
             'Test': self.on_test,
@@ -71,6 +71,10 @@ class Application(tk.Tk):
         self.statusbar.grid(sticky="we", row=4, padx=10)
 
         self.records_saved = 0
+
+
+        self.my_particle_bag=m.ParticleBag()
+
 
     def on_save_as(self):
         # first we need to ask which file to use...
@@ -103,13 +107,40 @@ class Application(tk.Tk):
         )
         self.recordform.reset()
 
+    def on_save_as(self):
+        # This seems to save the default path if set using related tk file functions.
+
+        tmpfilename = asksaveasfilename(
+            title='Select the target file for saving data',
+            defaultextension='.csv',
+            filetypes=[('Comma-Separated Values', '*.csv *.CSV')])
+
+        print("Chose filename", tmpfilename)
+        self.status.set(tmpfilename)
+
+
     def on_exit(self):
         self.destroy()
         #datestring = datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
         #self.status.set("Exit button called at {}".format(datestring))
 
     def on_test(self):
-        self.plotform.plotIt()
+        #print("about to start thread...")
+        #thread = Thread(target=self._on_test())
+        #thread.start()
+        #print("done starting thread...")
+        next_collision_time=self.my_particle_bag.time_to_wall_collision_list()
+        for i in next_collision_time:
+            print(i)
+
+        self.my_particle_bag.updateAllParticles(1.0)
+        self.plotform.plotAllParticles(self.my_particle_bag)
+        #Timer(0.25, self.on_test).start()
+
+    def _on_test(self):
+        self.my_particle_bag.updateAllParticles(1.0)
+        self.plotform.plotAllParticles(self.my_particle_bag)
+        print("loop")
 
     def on_specify_path(self):
         tmpdirname = askdirectory(
@@ -119,9 +150,29 @@ class Application(tk.Tk):
         )
         print("Chose tmpdirname of",tmpdirname)
         self.path.set(tmpdirname)
+        self.status.set(tmpdirname)
 
     def on_file_open(self):
         pass
 
 
+    def on_create_particle(self):
+        errors = self.recordform.get_errors()
+        if errors:
+            self.status.set(
+                "Cannot save, error in fields: {}"
+                    .format(', '.join(errors.keys()))
+            )
+            return False
+
+        # For now, we save to a hardcoded filename with a datestring.
+        datestring = datetime.today().strftime("%Y-%m-%d")
+        data = self.recordform.get()
+        for k,v in data.items():
+            print("Key:",k,"\tValue",v)
+
+        tmp_particle=m.Particle(data['X position'],data['Y position'],data['X velocity'],data['Y velocity'],data['Radius'],'red')
+
+        self.my_particle_bag.add_particle(tmp_particle)
+        self.plotform.plotParticle(tmp_particle)
 
