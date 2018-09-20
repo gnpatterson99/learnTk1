@@ -135,7 +135,7 @@ class Application(tk.Tk):
 
         self.my_particle_bag.updateAllParticles(1.0)
         self.plotform.plotAllParticles(self.my_particle_bag)
-        #Timer(0.25, self.on_test).start()
+        Timer(0.5, self.on_test).start()
 
     def _on_test(self):
         self.my_particle_bag.updateAllParticles(1.0)

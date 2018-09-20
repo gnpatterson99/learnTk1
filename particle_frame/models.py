@@ -123,6 +123,17 @@ class Particle(object):
         self.position_x=self.position_x + (self.velocity_x * delta_t)
         self.position_y=self.position_y + (self.velocity_y * delta_t)
 
+        if abs(self.position_x - self.size) < Dimensions.collision_threshold:
+            self.velocity_x = -1 * self.velocity_x
+
+        if abs( Dimensions.wall_x - self.size - self.position_x ) < Dimensions.collision_threshold:
+            self.velocity_x = -1 * self.velocity_x
+
+        if abs(self.position_y- self.size) < Dimensions.collision_threshold:
+            self.velocity_y = -1 * self.velocity_y
+
+        if abs( Dimensions.wall_y - self.size - self.position_y ) < Dimensions.collision_threshold:
+            self.velocity_y = -1 * self.velocity_y
 
 
 class ParticleBag(object):

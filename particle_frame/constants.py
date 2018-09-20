@@ -10,6 +10,7 @@ class FieldTypes:
 
 
 class Dimensions:
+    collision_threshold = 1.0E-4
     window_width = 800
     window_height = 400
 
